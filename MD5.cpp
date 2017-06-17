@@ -1,7 +1,7 @@
 #pragma hdrstop
 
 #include  "md5.h"
-#include  <string>
+#include <cstdint>
 
 #pragma warning( disable : 4005  )
 
@@ -223,7 +223,7 @@ namespace  md5
         PUT_UINT32( ctx->state[ 2], digest,  8  );
         PUT_UINT32( ctx->state[ 3], digest, 12  );
 	}
-	char *  Get_md5::operator () (char * buff,size_t len)
+	std::string   Get_md5::operator () (char * buff,size_t len)
 	{
 		const size_t step_len=10;//длина строки засунутой за 1 раз
 		size_t	step=step_len;
@@ -237,19 +237,22 @@ namespace  md5
 			}
 			md5_update(&cnt,buff+i,step);
 		}
-		uint8 *digest=new uint8[17];
-		md5_finish(&cnt,digest);
+		std::string digest;
+        digest.resize(17);
+		md5_finish(&cnt,digest.c_str());
 		digest[16]=0;
 		return digest;
 	}
-	char* Get_md5::ByteToCSTR(const unsigned char * isx,unsigned int len)
+	std::string   Get_md5::ByteToCSTR( std::string const& isx)
 	{
-		size_t _length=(len+1)*2+1;
-		char *result=new char[_length];//массив	конвентированных символов
-		for (size_t i = 0; i<=len; i++)
+		size_t _length=(isx.size())*2+1;
+		std::string result;//массив	конвентированных символов
+		result.resize(_length);
+		for (size_t i = 0; i < isx.size() - 1; i++)
 		{
-			char first=*(isx+i)>>4;
-			char second=*(isx+i)-(first<<4);
+			uint8_t ch = static_cast<uint8_t>( isx[i] );
+			char first=ch>>4;
+			char second=ch-(first<<4);
 			if (first<10)
 			{
 				first+=48;//цифры
@@ -264,10 +267,10 @@ namespace  md5
 			{
 				second+=65-10;//буквы
 			}
-			*(result+i*2)=first;
-			*(result+i*2+1)=second;
+			result[i*2]=first;
+			result[i*2+1]=second;
 		}
-		*(result+_length-1)=0;
+		result[_length-1]=0;
 		return result;
 	}
 }

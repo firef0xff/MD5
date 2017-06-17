@@ -1,6 +1,7 @@
 #ifndef  MD5H
 #define  MD5H
 
+#include  <string>
 namespace  md5
 {
 	#ifndef uint8
@@ -14,8 +15,8 @@ namespace  md5
 	class Get_md5
 	{
 	public:
-		char *  operator () (char * buff,unsigned int len);
-		char* 	ByteToCSTR	(const unsigned char * isx,unsigned int len);
+		std::string operator () (char * buff,unsigned int len);
+		std::string ByteToCSTR	( std::string const& isx );
 	private:
 		typedef struct
 		{
