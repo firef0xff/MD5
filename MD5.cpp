@@ -1,6 +1,6 @@
-#pragma hdrstop
+п»ї#pragma hdrstop
 
-#include  "md5.h"
+#include  "MD5.h"
 #include <cstdint>
 
 #pragma warning( disable : 4005  )
@@ -223,30 +223,30 @@ namespace  md5
         PUT_UINT32( ctx->state[ 2], digest,  8  );
         PUT_UINT32( ctx->state[ 3], digest, 12  );
 	}
-	std::string   Get_md5::operator () (char * buff,size_t len)
+	std::string Get_md5::operator () (char * buff,size_t len)
 	{
-		const size_t step_len=10;//длина строки засунутой за 1 раз
+		const size_t step_len=10;//РґР»РёРЅР° СЃС‚СЂРѕРєРё Р·Р°СЃСѓРЅСѓС‚РѕР№ Р·Р° 1 СЂР°Р·
 		size_t	step=step_len;
 		md5_context cnt;
 		md5_starts(&cnt);
 		for (size_t i=0; i<len; i+=step)
 		{
-			if (step>len-i)//определение  длинны шага
+			if (step>len-i)//РѕРїСЂРµРґРµР»РµРЅРёРµ  РґР»РёРЅРЅС‹ С€Р°РіР°
 			{
 				step=len-i;
 			}
-			md5_update(&cnt,buff+i,step);
+			md5_update(&cnt,reinterpret_cast<uint8*>(buff+i),step);
 		}
 		std::string digest;
         digest.resize(17);
-		md5_finish(&cnt,digest.c_str());
+		md5_finish(&cnt, reinterpret_cast<uint8*>( const_cast<char*>( digest.c_str() ) ) );
 		digest[16]=0;
 		return digest;
 	}
 	std::string   Get_md5::ByteToCSTR( std::string const& isx)
 	{
 		size_t _length=(isx.size())*2+1;
-		std::string result;//массив	конвентированных символов
+		std::string result;//РјР°СЃСЃРёРІ	РєРѕРЅРІРµРЅС‚РёСЂРѕРІР°РЅРЅС‹С… СЃРёРјРІРѕР»РѕРІ
 		result.resize(_length);
 		for (size_t i = 0; i < isx.size() - 1; i++)
 		{
@@ -255,17 +255,17 @@ namespace  md5
 			char second=ch-(first<<4);
 			if (first<10)
 			{
-				first+=48;//цифры
+				first+=48;//С†РёС„СЂС‹
 			}else
 			{
-				first+=65-10;//буквы
+				first+=65-10;//Р±СѓРєРІС‹
 			}
 			if (second<10)
 			{
-				second+=48;//цифры
+				second+=48;//С†РёС„СЂС‹
 			}else
 			{
-				second+=65-10;//буквы
+				second+=65-10;//Р±СѓРєРІС‹
 			}
 			result[i*2]=first;
 			result[i*2+1]=second;

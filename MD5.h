@@ -1,4 +1,4 @@
-#ifndef  MD5H
+﻿#ifndef  MD5H
 #define  MD5H
 
 #include  <string>
@@ -8,7 +8,7 @@ namespace  md5
 	#define uint8   unsigned char
 	#endif
 
-	#ifndef uint32
+    #ifndef uint32
 	#define uint32  unsigned long int
 	#endif
 
