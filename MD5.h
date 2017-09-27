@@ -15,7 +15,7 @@ namespace  md5
 	class Get_md5
 	{
 	public:
-		std::string operator () (char * buff,unsigned int len);
+      std::string operator () (char * buff,size_t len);
 		std::string ByteToCSTR	( std::string const& isx );
 	private:
 		typedef struct

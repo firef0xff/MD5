@@ -1,7 +1,6 @@
-﻿#pragma hdrstop
-
-#include  "MD5.h"
+﻿#include  "MD5.h"
 #include <cstdint>
+#include <cstring>
 
 #pragma warning( disable : 4005  )
 
